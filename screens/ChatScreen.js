@@ -55,7 +55,7 @@ export default function ChatScreen({navigation}) {
     renderUsernameOnMessage={true}
     listViewProps={{ 
         style: { 
-            backgroundColor: "lightblue"} }}
+            backgroundColor: "grey"} }}
     user={{ _id: auth.currentUser?.uid, name: auth.currentUser?.email }} />
   );
 }
