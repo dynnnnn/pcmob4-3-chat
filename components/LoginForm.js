@@ -1,13 +1,26 @@
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, {useState} from 'react'
 
 export default function LoginForm() {
+
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
   return (
     <View>
       <Text style={styles.fieldTitle}>Email</Text>
-      <TextInput style={styles.input} placeholder="Enter Email" />
+      <TextInput 
+      style={styles.input} 
+      placeholder="Enter Email"
+      value={email}
+      onChangeText={(text) => setEmail(text)} />
       <Text style={styles.fieldTitle}>Password</Text>
-      <TextInput style={styles.input} placeholder="Enter Password" secureTextEntry={true} />
+      <TextInput 
+      style={styles.input} 
+      placeholder="Enter Password" 
+      secureTextEntry={true}
+      value={password}
+      onChangeText={(text) => setPassword(text)} />
     <TouchableOpacity style={styles.loginButton}><Text style={styles.buttonText}>Log In</Text></TouchableOpacity>
     </View>
   )
