@@ -1,11 +1,24 @@
 import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
-import React, {useEffect}from 'react';
+import React, {useEffect, useState}from 'react';
 import firebase from '../database/firebaseDB';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { GiftedChat } from 'react-native-gifted-chat';
 
 const auth = firebase.auth();
 
+const demoMessage = {
+    _id: 1,
+    text: "hello",
+    createdAt: new Date(),
+    user:{
+        _id: 2,
+        name: "React Native",
+        avatar: "https://placeimg.com/140/140/any",
+    },
+};
+
 export default function ChatScreen({navigation}) {
+    const [messages, setMessages] = useState([]);
     useEffect(() => {
         auth.onAuthStateChanged((user) => {
             if (user) {
@@ -22,16 +35,18 @@ export default function ChatScreen({navigation}) {
                 </TouchableOpacity>
             ),
         });
+
+        setMessages([demoMessage]);
     }, []);
 
     const logout = () => auth.signOut();
   return (
-    <View>
-    <Button onPress={logout} title="Logout"></Button>
-      <Text>ChatScreen</Text>
-      
-    </View>
-  )
+    <GiftedChat
+    messages={messages}
+    onSend={(newMessages) => onSend(newMessages)}
+    listViewProps={{ style: { backgroungColor: "blue"} }}
+    user={{ _id: 1 }} />
+  );
 }
 
 const styles = StyleSheet.create({})
