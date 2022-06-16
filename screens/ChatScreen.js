@@ -6,16 +6,7 @@ import { GiftedChat } from 'react-native-gifted-chat';
 
 const auth = firebase.auth();
 
-const demoMessage = {
-    _id: 1,
-    text: "hello",
-    createdAt: new Date(),
-    user:{
-        _id: 2,
-        name: "React Native",
-        avatar: "https://placeimg.com/140/140/any",
-    },
-};
+const db = firebase.firestore().collection("messages");
 
 export default function ChatScreen({navigation}) {
     const [messages, setMessages] = useState([]);
@@ -36,16 +27,33 @@ export default function ChatScreen({navigation}) {
             ),
         });
 
-        setMessages([demoMessage]);
+        const unsubscribe = db
+        .orderBy("createdAt", "desc")
+        .onSnapshot((collectionSnapshot) => {
+            const messages = collectionSnapshot.docs.map((doc) => {
+                const date = doc.data().createdAt.toDate();
+                const newDoc = {...doc.data(), createdAt: date};
+                return newDoc;
+            });
+            setMessages(messages);
+        });
+        return unsubscribe;
     }, []);
 
     const logout = () => auth.signOut();
+
+    function sendMessage(newMessages){
+        console.log(newMessages);
+        db.add(newMessages[0]);
+        //setMessages([...messages, ...newMessages]);
+
+    }
   return (
     <GiftedChat
     messages={messages}
-    onSend={(newMessages) => onSend(newMessages)}
-    listViewProps={{ style: { backgroungColor: "blue"} }}
-    user={{ _id: 1 }} />
+    onSend={sendMessage}
+    listViewProps={{ style: { backgroungColor: "lightblue"} }}
+    user={{ _id: auth.currentUser?.uid, name: auth.currentUser?.email }} />
   );
 }
 
