@@ -1,10 +1,16 @@
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native'
-import React, {useState} from 'react'
+import React, {useState} from 'react';
+
+import { NavigationContainer } from '@react-navigation/native';
+
+
+
 
 export default function LoginForm() {
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+   
+
+    
 
   return (
     <View>
